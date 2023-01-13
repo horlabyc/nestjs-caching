@@ -1,0 +1,15 @@
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { Cache } from 'cache-manager';
+
+@Injectable()
+export class AppService {
+  constructor(@Inject(CACHE_MANAGER) private readonly cacheManager: Cache) {}
+  async getHello() {
+    this.cacheManager.set('cached_item', { name: 'Sulaiman' });
+    this.cacheManager.del('cached_item');
+    this.cacheManager.reset();
+    const cache = await this.cacheManager.get('cached_item');
+    console.log({ cache });
+    return 'Hello World!';
+  }
+}
